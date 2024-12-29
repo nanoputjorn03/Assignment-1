@@ -1,12 +1,10 @@
 /*Tat Putjorn 672115024 */
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
 
 public class SortingMain {
     public static Vector<StudentsName> fileReading(String fileName) throws FileNotFoundException {
@@ -20,6 +18,7 @@ public class SortingMain {
 
         while (readFile.hasNextLine()) {
             String dataLine = readFile.nextLine();
+            System.out.println("Processing line: " + dataLine); // Debugging output
             StringTokenizer studentToken = new StringTokenizer(dataLine.trim(), ",");
             if (studentToken.countTokens() >= 3) {
                 studentToken.nextToken();
@@ -27,6 +26,8 @@ public class SortingMain {
                 String firstName = studentToken.nextToken().trim();
                 String lastName = studentToken.nextToken().trim();
                 studentInfo.add(new StudentsName(sid, firstName, lastName));
+            } else {
+                System.out.println("Skipping malformed line: " + dataLine);
             }
         }
 
@@ -34,18 +35,15 @@ public class SortingMain {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        
-        Scanner scanner = new Scanner(System.in);
-        Vector<StudentsName> students = fileReading("C:\\Users\\ACER\\Documents\\ADT name list\\class_roaster67.csv");
+        if (args.length < 2) {
+            System.out.println("Usage: <option> <filename>");
+            return;
+        }
 
-        System.out.println("Welcome to the Student Manager Program");
-        System.out.println("Please choose an option:");
-        System.out.println("-n: Sort by Student Number");
-        System.out.println("-f: Sort by First Name");
-        System.out.println("-l: Sort by Last Name");
-        System.out.println("-s: Search by First Name");
-        System.out.print("Enter your choice: ");
-        String option = scanner.nextLine();
+        String option = args[0];
+        String filePath = args[1];
+
+        Vector<StudentsName> students = fileReading(filePath);
 
         if (!option.equals("-n") && !option.equals("-f") && !option.equals("-l") && !option.equals("-s")) {
             System.out.println("Invalid choice. Exiting program.");
@@ -53,8 +51,11 @@ public class SortingMain {
         }
 
         if ("-s".equals(option)) {
-            System.out.print("Enter the first name to search: ");
-            String searchName = scanner.nextLine();
+            if (args.length < 3) {
+                System.out.println("Usage: -s <name>");
+                return;
+            }
+            String searchName = args[2];
             int index = searchStudent(students, searchName);
             if (index != -1) {
                 System.out.println("The name " + searchName + " was found at index " + index);
@@ -110,3 +111,5 @@ public class SortingMain {
         return -1;
     }
 }
+
+
