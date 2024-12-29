@@ -1,12 +1,10 @@
 /*Tat Putjorn 672115024 */
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
 
 public class SortingMain {
     public static Vector<StudentsName> fileReading(String fileName) throws FileNotFoundException {
@@ -33,18 +31,22 @@ public class SortingMain {
         return studentInfo;
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Vector<StudentsName> students = fileReading("C:\\Users\\ACER\\Documents\\ADT name list\\class_roaster67.csv");
 
-        System.out.println("Welcome to the Student Manager Program");
-        System.out.println("Please choose an option:");
-        System.out.println("-n: Sort by Student Number");
-        System.out.println("-f: Sort by First Name");
-        System.out.println("-l: Sort by Last Name");
-        System.out.println("-s: Search by First Name");
-        System.out.print("Enter your choice: ");
+        System.out.print("Enter the file name: ");
+        String fileName = scanner.nextLine();
+
+        Vector<StudentsName> students;
+        try {
+            students = fileReading(fileName);
+            System.out.println("File successfully loaded!");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: The specified file could not be found. Please check the file path and try again.");
+            return;
+        }
+
+        System.out.print("Enter the sorting/search option (-n, -f, -l, -s): ");
         String option = scanner.nextLine();
 
         if (!option.equals("-n") && !option.equals("-f") && !option.equals("-l") && !option.equals("-s")) {
